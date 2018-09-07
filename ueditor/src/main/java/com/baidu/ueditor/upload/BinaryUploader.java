@@ -21,8 +21,10 @@ import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class BinaryUploader {
+
 
     public static final State save(HttpServletRequest request,
                                    Map<String, Object> conf) {
@@ -50,6 +52,8 @@ public class BinaryUploader {
                     break;
                 fileStream = null;
             }
+            //
+            System.out.println("fliestream:"+fileStream.openStream().available());
 
             if (fileStream == null) {
                 return new BaseState(false, AppInfo.NOTFOUND_UPLOAD_DATA);
@@ -57,6 +61,9 @@ public class BinaryUploader {
 
             String savePath = (String) conf.get("savePath");
             String originFileName = fileStream.getName();
+            //
+            System.out.println("originFileName:"+originFileName);
+
             String suffix = FileType.getSuffixByFilename(originFileName);
 
             originFileName = originFileName.substring(0,
@@ -86,11 +93,14 @@ public class BinaryUploader {
                 Class clazz;
                 try {
 
+
                     clazz = Class.forName(conf.get("proxyPath").toString());
                     Method m = clazz.getMethod("saveFileByInputStream", InputStream.class, String.class, long.class);
                     InputStream is = fileStream.openStream();
-                    System.out.println("m"+m);
-                    storageState = (State) m.invoke(clazz.newInstance(), is, savePath, maxSize);
+                    System.out.println("binaryis:"+is.available());
+                    System.out.println("savePath:"+savePath);
+                    //storageState = (State) m.invoke(clazz.newInstance(), is, savePath, maxSize);
+                    storageState = (State) m.invoke(clazz.newInstance(), new Object[] { is, savePath, maxSize});
                     System.out.println("state"+storageState.toString());
                     is.close();
                 } catch (Exception e) {
