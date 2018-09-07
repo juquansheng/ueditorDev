@@ -85,10 +85,13 @@ public class BinaryUploader {
             } else {
                 Class clazz;
                 try {
+
                     clazz = Class.forName(conf.get("proxyPath").toString());
                     Method m = clazz.getMethod("saveFileByInputStream", InputStream.class, String.class, long.class);
                     InputStream is = fileStream.openStream();
+                    System.out.println("m"+m);
                     storageState = (State) m.invoke(clazz.newInstance(), is, savePath, maxSize);
+                    System.out.println("state"+storageState.toString());
                     is.close();
                 } catch (Exception e) {
                     e.printStackTrace();

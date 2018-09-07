@@ -1,0 +1,10 @@
+######### hdfs config
+fdfs:
+  so-timeout: 1500
+  connect-timeout: 1200
+  trackerList:
+    - 116.62.138.113:22122
+  #trackerList[0]: 116.62.138.113:22122
+
+
+
