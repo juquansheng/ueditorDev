@@ -1,5 +1,6 @@
 package com.baidu.ueditor;
 
+import java.io.FileNotFoundException;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +34,7 @@ public class ActionEnter {
 
     }
 
-    public String exec() {
+    public String exec() throws FileNotFoundException {
 
         String callbackName = this.request.getParameter("callback");
 
@@ -51,7 +52,7 @@ public class ActionEnter {
 
     }
 
-    public String invoke() {
+    public String invoke() throws FileNotFoundException {
 
         if (actionType == null || !ActionMap.mapping.containsKey(actionType)) {
             return new BaseState(false, AppInfo.INVALID_ACTION).toJSONString();

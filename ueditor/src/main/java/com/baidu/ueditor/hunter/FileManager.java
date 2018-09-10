@@ -1,10 +1,15 @@
 package com.baidu.ueditor.hunter;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
+import com.baidu.ueditor.TTBFUtils.TTBFHttpUtils;
+import com.baidu.ueditor.upload.TTBF;
 import org.apache.commons.io.FileUtils;
 
 import com.baidu.ueditor.PathFormat;
@@ -29,7 +34,7 @@ public class FileManager {
 
     }
 
-    public State listFile(int index) {
+    public State listFile(int index) throws FileNotFoundException {
 
         File dir = new File(this.dir);
         State state = null;
@@ -58,7 +63,7 @@ public class FileManager {
 
     }
 
-    private State getState(Object[] files) {
+    private State getState(Object[] files) throws FileNotFoundException {
 
         MultiState state = new MultiState(true);
         BaseState fileState = null;
@@ -70,8 +75,9 @@ public class FileManager {
                 break;
             }
             file = (File) obj;
+            InputStream inputStream = new FileInputStream(file);
             fileState = new BaseState(true);
-            fileState.putInfo("url", PathFormat.format(this.getPath(file)));
+            fileState.putInfo("url", TTBFHttpUtils.post("http://ttbf.malaxiaoyugan.com/yuuki/file/fileupload", inputStream, file.getName()).getData());
             state.addState(fileState);
         }
 

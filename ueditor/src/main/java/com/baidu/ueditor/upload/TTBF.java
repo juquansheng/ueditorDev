@@ -40,9 +40,17 @@ public class TTBF {
     }
 
 
+    /**
+     *
+     * @param is
+     * @param path 传过来的文件名（只用来区分文件得类型）
+     * @param maxSize
+     * @return
+     */
     public static State saveFileByInputStream(InputStream is, String path, long maxSize) {
 
         try {
+
 
 
             //上传fdfs
@@ -58,7 +66,7 @@ public class TTBF {
             return state;
         } catch (Exception e) {
             e.printStackTrace();
-            return new BaseState(false, AppInfo.IO_ERROR);
+            return new BaseState(false, AppInfo.MAX_SIZE);
         }
     }
 
@@ -68,14 +76,16 @@ public class TTBF {
 
             //上传fdfs
             Result result = TTBFHttpUtils.post("http://ttbf.malaxiaoyugan.com/yuuki/file/fileupload", is, path);
+            String storePath = result.getData();
+            String flieName = storePath.substring(17, storePath.length());
             BaseState state = new BaseState(true);
             state.putInfo("size", is.available());
             state.putInfo("url", result.getData());
-            state.putInfo("title", path);
+            state.putInfo("title", flieName);
             return state;
         } catch (Exception e) {
             e.printStackTrace();
-            return new BaseState(false, AppInfo.IO_ERROR);
+            return new BaseState(false, AppInfo.MAX_SIZE);
         }
     }
 
