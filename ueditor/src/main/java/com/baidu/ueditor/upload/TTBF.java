@@ -26,12 +26,11 @@ public class TTBF {
             //上传fdfs
             System.out.println(file.getName());
             Result result = TTBFHttpUtils.post("http://ttbf.malaxiaoyugan.com/yuuki/file/fileupload", is, file.getName());
-            String storePath = result.getData();
-            String flieName = storePath.substring(17, storePath.length());
+
             BaseState state = new BaseState(true);
             state.putInfo("size", data.length);
             state.putInfo("url", result.getData());
-            state.putInfo("title", flieName);
+            state.putInfo("title", "ttbf");
             return state;
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,12 +56,10 @@ public class TTBF {
             System.out.println("file:开始上传");
             Result result = TTBFHttpUtils.post("http://ttbf.malaxiaoyugan.com/yuuki/file/fileupload", is, path);
             System.out.println("result"+result.toString());
-            String storePath = result.getData();
-            String flieName = storePath.substring(17, storePath.length());
             BaseState state = new BaseState(true);
             state.putInfo("size", is.available());
             state.putInfo("url", result.getData());
-            state.putInfo("title", flieName);
+            state.putInfo("title", "ttbf");
             return state;
         } catch (Exception e) {
             e.printStackTrace();
@@ -76,12 +73,10 @@ public class TTBF {
 
             //上传fdfs
             Result result = TTBFHttpUtils.post("http://ttbf.malaxiaoyugan.com/yuuki/file/fileupload", is, path);
-            String storePath = result.getData();
-            String flieName = storePath.substring(17, storePath.length());
             BaseState state = new BaseState(true);
             state.putInfo("size", is.available());
             state.putInfo("url", result.getData());
-            state.putInfo("title", flieName);
+            state.putInfo("title", "ttbf");
             return state;
         } catch (Exception e) {
             e.printStackTrace();
